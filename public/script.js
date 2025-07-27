@@ -1,240 +1,560 @@
-// Mobile Navigation Toggle
+// Utility functions for better performance and reliability
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
+const throttle = (func, limit) => {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+};
+
+// Check if device is mobile
+const isMobile = () => window.innerWidth <= 768;
+const isTablet = () => window.innerWidth <= 1024 && window.innerWidth > 768;
+
+// Mobile Navigation Toggle with improved accessibility
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
+const body = document.body;
 
-hamburger?.addEventListener('click', () => {
+hamburger?.addEventListener('click', (e) => {
+    e.stopPropagation();
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
+    
+    // Prevent body scroll when mobile menu is open
+    if (navMenu.classList.contains('active')) {
+        body.style.overflow = 'hidden';
+        hamburger.setAttribute('aria-expanded', 'true');
+        navMenu.setAttribute('aria-hidden', 'false');
+    } else {
+        body.style.overflow = '';
+        hamburger.setAttribute('aria-expanded', 'false');
+        navMenu.setAttribute('aria-hidden', 'true');
+    }
 });
 
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (navMenu?.classList.contains('active') && 
+        !navMenu.contains(e.target) && 
+        !hamburger?.contains(e.target)) {
+        closeMobileMenu();
+    }
+});
+
+// Close mobile menu function
+function closeMobileMenu() {
     hamburger?.classList.remove('active');
     navMenu?.classList.remove('active');
-}));
+    body.style.overflow = '';
+    hamburger?.setAttribute('aria-expanded', 'false');
+    navMenu?.setAttribute('aria-hidden', 'true');
+}
 
-// Smooth scrolling for navigation links
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+});
+
+// Enhanced smooth scrolling with mobile optimization
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+            const headerOffset = isMobile() ? 70 : 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
         }
     });
 });
 
-// Navbar background on scroll
-window.addEventListener('scroll', () => {
+// Enhanced navbar background on scroll with performance optimization
+const handleScroll = throttle(() => {
     const navbar = document.querySelector('.navbar');
     if (navbar) {
-        navbar.style.background = window.scrollY > 100 ? 'rgba(10, 10, 10, 0.98)' : 'rgba(10, 10, 10, 0.95)';
+        const scrollY = window.scrollY;
+        if (scrollY > 100) {
+            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
+            navbar.style.backdropFilter = 'blur(15px)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+        } else {
+            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+            navbar.style.backdropFilter = 'blur(10px)';
+            navbar.style.boxShadow = 'none';
+        }
     }
-});
+}, 16);
 
-// Intersection Observer for animations
+window.addEventListener('scroll', handleScroll);
+
+// Enhanced Intersection Observer for animations with mobile optimization
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: isMobile() ? 0.1 : 0.2,
+    rootMargin: isMobile() ? '0px 0px -30px 0px' : '0px 0px -50px 0px'
 };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            // Add staggered animation for better mobile experience
+            const delay = Array.from(entry.target.parentNode.children).indexOf(entry.target) * 100;
+            entry.target.style.animationDelay = `${delay}ms`;
         }
     });
 }, observerOptions);
 
-const animateElements = document.querySelectorAll('.project-card, .skill-category, .stat-card, .timeline-item');
-animateElements.forEach(el => {
+// Observe elements with improved mobile detection
+const animateElements = document.querySelectorAll('.project-card, .skill-category, .stat-card, .timeline-item, .education-card');
+animateElements.forEach((el, index) => {
     el.classList.add('fade-in');
+    // Add progressive delay for mobile
+    if (isMobile()) {
+        el.style.animationDelay = `${index * 150}ms`;
+    }
     observer.observe(el);
 });
 
-// Typing effect for hero title
+// Enhanced typing effect with mobile optimization
 const heroTitle = document.querySelector('.hero-title');
-const titleText = heroTitle?.innerHTML || '';
-if (heroTitle) heroTitle.innerHTML = '';
-
-let i = 0;
-function typeWriter() {
-    if (i < titleText.length) {
-        heroTitle.innerHTML += titleText.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
+if (heroTitle) {
+    const titleText = heroTitle.innerHTML;
+    heroTitle.innerHTML = '';
+    
+    let i = 0;
+    const speed = isMobile() ? 30 : 50; // Faster on mobile
+    
+    function typeWriter() {
+        if (i < titleText.length) {
+            heroTitle.innerHTML += titleText.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+        } else {
+            heroTitle.style.borderRight = 'none'; // Remove cursor after typing
+        }
     }
+
+    // Add cursor effect
+    heroTitle.style.borderRight = '3px solid #00d4ff';
+    heroTitle.style.animation = 'blink 1s infinite';
+    
+    window.addEventListener('load', () => {
+        setTimeout(typeWriter, isMobile() ? 500 : 1000);
+    });
 }
 
-window.addEventListener('load', () => {
-    setTimeout(typeWriter, 1000);
-});
+// Optimized parallax effect (disabled on mobile for performance)
+if (!isMobile()) {
+    const handleParallax = throttle(() => {
+        const scrolled = window.pageYOffset;
+        const parallax = document.querySelector('.hero');
+        const speed = scrolled * 0.3;
+        if (parallax) {
+            parallax.style.transform = `translateY(${speed}px)`;
+        }
+    }, 16);
+    
+    window.addEventListener('scroll', handleParallax);
+}
 
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.hero');
-    const speed = scrolled * 0.5;
-    if (parallax) {
-        parallax.style.transform = `translateY(${speed}px)`;
-    }
-});
-
-// Skill tag hover effects
+// Enhanced skill tag interactions with touch support
 document.querySelectorAll('.skill-tag').forEach(tag => {
+    // Mouse events for desktop
     tag.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-3px) scale(1.05)';
-        this.style.boxShadow = '0 5px 15px rgba(0, 212, 255, 0.3)';
+        if (!isMobile()) {
+            this.style.transform = 'translateY(-3px) scale(1.05)';
+            this.style.boxShadow = '0 5px 15px rgba(0, 212, 255, 0.3)';
+        }
     });
 
     tag.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-        this.style.boxShadow = 'none';
+        if (!isMobile()) {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = 'none';
+        }
+    });
+
+    // Touch events for mobile
+    tag.addEventListener('touchstart', function() {
+        this.style.transform = 'scale(0.95)';
+        this.style.background = 'rgba(0, 212, 255, 0.2)';
+    });
+
+    tag.addEventListener('touchend', function() {
+        setTimeout(() => {
+            this.style.transform = 'scale(1)';
+            this.style.background = 'rgba(0, 212, 255, 0.1)';
+        }, 150);
     });
 });
 
-// ✅ Contact form integration with Node.js backend
-// File: script.js
+// Enhanced contact form with better mobile UX
 const contactForm = document.querySelector('.contact-form form');
 
 contactForm?.addEventListener('submit', async function (e) {
-  e.preventDefault();
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    
+    // Show loading state
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
 
-  const name = this.querySelector('input[type="text"]').value.trim();
-  const email = this.querySelector('input[type="email"]').value.trim();
-  const message = this.querySelector('textarea').value.trim();
+    const name = this.querySelector('input[type="text"]').value.trim();
+    const email = this.querySelector('input[type="email"]').value.trim();
+    const message = this.querySelector('textarea').value.trim();
 
-  if (!name || !email || !message) {
-    alert('Please fill in all fields.');
-    return;
-  }
-
-  try {
-    const response = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, message }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert(data.message || 'Message sent successfully!');
-      this.reset();
-    } else {
-      alert(data.message || 'Failed to send message.');
+    // Enhanced validation
+    if (!name || name.length < 2) {
+        showNotification('Please enter a valid name (at least 2 characters).', 'error');
+        resetSubmitButton();
+        return;
     }
-  } catch (error) {
-    console.error('Form submission error:', error);
-    alert('An error occurred. Please try again later.');
-  }
+
+    if (!email || !isValidEmail(email)) {
+        showNotification('Please enter a valid email address.', 'error');
+        resetSubmitButton();
+        return;
+    }
+
+    if (!message || message.length < 10) {
+        showNotification('Please enter a message (at least 10 characters).', 'error');
+        resetSubmitButton();
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, message }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification(data.message || 'Message sent successfully!', 'success');
+            this.reset();
+        } else {
+            showNotification(data.message || 'Failed to send message.', 'error');
+        }
+    } catch (error) {
+        console.error('Form submission error:', error);
+        showNotification('Network error. Please check your connection and try again.', 'error');
+    }
+
+    function resetSubmitButton() {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+    }
+
+    setTimeout(resetSubmitButton, 1000);
 });
 
+// Email validation helper
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
 
-// Button ripple effect
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-        ripple.style.position = 'absolute';
-        ripple.style.borderRadius = '50%';
-        ripple.style.background = 'rgba(255, 255, 255, 0.3)';
-        ripple.style.transform = 'scale(0)';
-        ripple.style.animation = 'ripple 0.6s linear';
-        ripple.style.left = `${e.offsetX}px`;
-        ripple.style.top = `${e.offsetY}px`;
-        ripple.style.width = '20px';
-        ripple.style.height = '20px';
-        ripple.style.pointerEvents = 'none';
+// Enhanced notification system
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <span class="notification-icon">${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}</span>
+        <span class="notification-message">${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        z-index: 10000;
+        max-width: calc(100vw - 40px);
+        word-wrap: break-word;
+        animation: slideIn 0.3s ease-out;
+    `;
 
-        this.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 600);
-    });
-});
+    document.body.appendChild(notification);
 
-// Ripple keyframes
-const style = document.createElement('style');
-style.textContent = `
-@keyframes ripple {
-    to {
-        transform: scale(4);
-        opacity: 0;
-    }
-}`;
-document.head.appendChild(style);
+    // Auto remove after 5 seconds
+    const autoRemove = setTimeout(() => notification.remove(), 5000);
 
-// Floating animation
-function addFloatingAnimation() {
-    const cards = document.querySelectorAll('.floating-card');
-    cards.forEach((card, index) => {
-        const delay = Math.random() * 2;
-        const duration = 4 + Math.random() * 4;
-        card.style.animationDelay = `${delay}s`;
-        card.style.animationDuration = `${duration}s`;
+    // Manual close
+    notification.querySelector('.notification-close').addEventListener('click', () => {
+        clearTimeout(autoRemove);
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
     });
 }
-addFloatingAnimation();
 
-// Project card hover
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-15px) rotateX(5deg)';
-        this.style.boxShadow = '0 25px 50px rgba(0, 212, 255, 0.2)';
-    });
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) rotateX(0deg)';
-        this.style.boxShadow = 'none';
-    });
+// Enhanced button ripple effect with touch support
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', createRipple);
+    btn.addEventListener('touchstart', createRipple);
+    
+    function createRipple(e) {
+        const ripple = document.createElement('span');
+        const rect = btn.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        
+        ripple.style.cssText = `
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${(e.clientX || e.touches[0].clientX) - rect.left - size/2}px;
+            top: ${(e.clientY || e.touches[0].clientY) - rect.top - size/2}px;
+            pointer-events: none;
+        `;
+
+        btn.style.position = 'relative';
+        btn.style.overflow = 'hidden';
+        btn.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
 });
 
-// Logo glitch
+// Enhanced project card interactions with mobile optimization
+document.querySelectorAll('.project-card').forEach(card => {
+    if (!isMobile()) {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-15px) rotateX(5deg)';
+            this.style.boxShadow = '0 25px 50px rgba(0, 212, 255, 0.2)';
+            this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) rotateX(0deg)';
+            this.style.boxShadow = 'none';
+        });
+    } else {
+        // Touch interactions for mobile
+        card.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+            this.style.transition = 'transform 0.1s ease';
+        });
+        
+        card.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+            this.style.transition = 'transform 0.2s ease';
+        });
+    }
+});
+
+// Enhanced logo interaction
 const logo = document.querySelector('.logo-text');
 logo?.addEventListener('mouseenter', () => {
-    logo.style.animation = 'glitch 0.5s ease-in-out';
+    if (!isMobile()) {
+        logo.style.animation = 'glitch 0.5s ease-in-out';
+    }
 });
+
+logo?.addEventListener('touchstart', () => {
+    if (isMobile()) {
+        logo.style.animation = 'glitch 0.3s ease-in-out';
+    }
+});
+
 logo?.addEventListener('animationend', () => {
     logo.style.animation = '';
 });
 
-const glitchStyle = document.createElement('style');
-glitchStyle.textContent = `
-@keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
-}`;
-document.head.appendChild(glitchStyle);
-
-// Particle background
+// Optimized particle background (reduced count on mobile)
 function createParticles() {
+    if (isMobile()) return; // Skip particles on mobile for performance
+    
     const hero = document.querySelector('.hero');
-    const particleCount = 50;
+    const particleCount = isTablet() ? 25 : 50;
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
-        particle.style.position = 'absolute';
-        particle.style.width = Math.random() * 4 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.background = `rgba(0, 212, 255, ${Math.random() * 0.5})`;
-        particle.style.borderRadius = '50%';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.pointerEvents = 'none';
-        particle.style.animation = `float ${Math.random() * 10 + 10}s infinite ease-in-out`;
-        particle.style.animationDelay = Math.random() * 10 + 's';
+        
+        const size = Math.random() * 4 + 1;
+        particle.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            background: rgba(0, 212, 255, ${Math.random() * 0.5});
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            pointer-events: none;
+            animation: float ${Math.random() * 10 + 10}s infinite ease-in-out;
+            animation-delay: ${Math.random() * 10}s;
+            will-change: transform;
+        `;
 
         hero?.appendChild(particle);
     }
 }
-createParticles();
 
-// Final log
-console.log('🚀 Portfolio loaded successfully!');
+// Responsive handling
+function handleResize() {
+    const currentlyMobile = isMobile();
+    
+    // Close mobile menu if screen becomes desktop
+    if (!currentlyMobile && navMenu?.classList.contains('active')) {
+        closeMobileMenu();
+    }
+    
+    // Refresh particles based on screen size
+    document.querySelectorAll('.particle').forEach(p => p.remove());
+    createParticles();
+}
+
+window.addEventListener('resize', debounce(handleResize, 250));
+
+// Add CSS animations if not already present
+if (!document.querySelector('#portfolio-animations')) {
+    const style = document.createElement('style');
+    style.id = 'portfolio-animations';
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: #00d4ff; }
+            51%, 100% { border-color: transparent; }
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .notification {
+                top: 10px !important;
+                right: 10px !important;
+                left: 10px !important;
+                max-width: none !important;
+            }
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    
+    // Add loading animation
+    document.body.style.opacity = '0';
+    document.body.style.transition = 'opacity 0.5s ease-in-out';
+    
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
+});
+
+// Performance monitoring
+if ('loading' in HTMLImageElement.prototype) {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    images.forEach(img => {
+        img.addEventListener('load', () => {
+            img.style.animation = 'fadeIn 0.5s ease-in-out';
+        });
+    });
+}
+
+// Error handling for better UX
+window.addEventListener('error', (e) => {
+    console.error('Portfolio error:', e.error);
+});
+
+window.addEventListener('unhandledrejection', (e) => {
+    console.error('Unhandled promise rejection:', e.reason);
+});
+
+// Final initialization log
+console.log('🚀 Enhanced Portfolio loaded successfully!');
+console.log('📱 Mobile optimizations active');
+console.log('⚡ Performance optimizations enabled');
 console.log('Made with ❤️ by Satvik Jambagi');
