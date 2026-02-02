@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Satvik Jambagi - Full Stack Developer</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <!-- In your HTML head -->
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <span class="logo-text">Satvik Jambagi</span>
+        </div>
+
+        <ul class="nav-menu">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#experience" class="nav-link">Experience</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-container">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h1 class="hero-title">Hi, I'm Satvik Jambagi</h1>
+            <p class="hero-subtitle">Full Stack Developer & Problem Solver</p>
+            <p class="hero-description">
+              Computer Science undergraduate at VIT specializing in full-stack
+              development, cloud-native systems, and scalable backend
+              architectures.
+            </p>
+
+            <div class="hero-buttons">
+              <a href="#projects" class="btn btn-primary">View My Work</a>
+              <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+          </div>
+          <div class="hero-image">
+            <div class="floating-card">
+              <div class="card-content">
+                <i class="fas fa-code"></i>
+                <h3>900+</h3>
+                <p>Problems</p>
+                <p>Solved</p>
+              </div>
+            </div>
+            <div class="floating-card delay-1">
+              <div class="card-content">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>9.40</h3>
+                <p>CGPA</p>
+              </div>
+            </div>
+            <div class="floating-card delay-2">
+              <div class="card-content">
+                <i class="fas fa-project-diagram"></i>
+                <h3>Full Stack</h3>
+                <p>Developer</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <div class="scroll-arrow"></div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+      <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-content">
+          <div class="education-card">
+            <h3>Education</h3>
+            <div class="education-item">
+              <h4>B.Tech in Computer Science</h4>
+              <p>Vellore Institute of Technology</p>
+              <span class="date">Aug 2023 – Present</span>
+              <div class="cgpa">CGPA: <span class="highlight">9.40</span></div>
+              <button class="btn btn-secondary" id="viewTranscript">
+                View Resume
+              </button>
+            </div>
+          </div>
+          <script>
+            document
+              .getElementById("viewTranscript")
+              .addEventListener("click", function () {
+                // Replace this with your actual Google Drive share link
+                const driveLink =
+                  "https://drive.google.com/file/d/1d8Batmevz_ZDZ5Tx3to1Nq-wcsv-8Jl9/view?usp=sharing";
+                window.open(driveLink, "_blank");
+              });
+          </script>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>600+</h3>
+              <p>LeetCode Problems Solved</p>
+            </div>
+            <div class="stat-card">
+              <h3>900+</h3>
+              <p>Total DSA Problems</p>
+            </div>
+            <div class="stat-card">
+              <h3>Top 12.5%</h3>
+              <p>LeetCode Global Rank</p>
+            </div>
+            <div class="stat-card">
+              <h3>1363</h3>
+              <p>Codeforces Rating</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+      <div class="container">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>Languages</h3>
+            <div class="skill-items">
+              <span class="skill-tag">C++</span>
+              <span class="skill-tag">Java</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">HTML</span>
+              <span class="skill-tag">CSS</span>
+              <span class="skill-tag">C</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Frameworks & Tools</h3>
+            <div class="skill-items">
+              <span class="skill-tag">React.js</span>
+              <span class="skill-tag">Redux</span>
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Express.js</span>
+              <span class="skill-tag">Flask</span>
+              <span class="skill-tag">EJS</span>
+              <span class="skill-tag">Mongoose</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Databases</h3>
+            <div class="skill-items">
+              <span class="skill-tag">MySQL</span>
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">MongoDB</span>
+              <span class="skill-tag">Oracle SQL Plus</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Design & Others</h3>
+            <div class="skill-items">
+              <span class="skill-tag">AWS (EC2, S3, CloudFront)</span>
+              <span class="skill-tag">Vercel</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">GitHub</span>
+              <span class="skill-tag">Tailwind CSS</span>
+              <span class="skill-tag">Power BI</span>
+              <span class="skill-tag">MATLAB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+      <div class="container">
+        <h2 class="section-title">Featured Projects</h2>
+
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-image">
+              <div class="project-overlay">
+                <div class="project-links">
+                  <a href="https://unigrid.vercel.app/" class="project-link"
+                    ><i class="fas fa-external-link-alt"></i
+                  ></a>
+                  <a href="https://github.com/7vik2005" class="project-link"
+                    ><i class="fab fa-github"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="project-content">
+              <h3>UniGrid</h3>
+              <p>
+                Academic Records Management System built using React, Node.js,
+                and PostgreSQL to digitize institutional workflows and
+                centralize student, faculty, and admin operations.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">React.js</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">PostgreSQL</span>
+              </div>
+              <div class="project-stats">
+                <span
+                  ><i class="fas fa-database"></i> 35% efficiency boost</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">
+              <div class="project-overlay">
+                <div class="project-links">
+                  <a href="#" class="project-link"
+                    ><i class="fas fa-external-link-alt"></i
+                  ></a>
+                  <a
+                    href="https://github.com/AJ1312/Nutri-Baba"
+                    class="project-link"
+                    ><i class="fab fa-github"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="project-content">
+              <h3>NutriBaba</h3>
+              <p>
+                AI-powered nutritive insights platform deployed on AWS using
+                EC2, S3, and CloudFront with a Flask-based backend for image
+                analysis and REST APIs.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">Flask</span>
+                <span class="tech-tag">AWS</span>
+                <span class="tech-tag">MongoDB</span>
+              </div>
+              <div class="project-stats">
+                <span
+                  ><i class="fas fa-cloud"></i> 40% scalability
+                  improvement</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Add more project cards as needed -->
+          <div class="project-card">
+            <div class="project-image">
+              <div class="project-overlay">
+                <div class="project-links">
+                  <a
+                    href="https://codolio.com/profile/satvikkkk20"
+                    class="project-link"
+                    ><i class="fas fa-external-link-alt"></i
+                  ></a>
+                  <a
+                    href="https://github.com/7vik2005/LeetCode"
+                    class="project-link"
+                    ><i class="fab fa-github"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+            <div class="project-content">
+              <h3>Algorithm Solutions</h3>
+              <p>
+                Collection of optimized solutions for 500+ LeetCode problems and
+                competitive programming challenges.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag">C++</span>
+                <span class="tech-tag">Java</span>
+                <span class="tech-tag">JavaScript</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">SQL</span>
+              </div>
+              <div class="project-stats">
+                <span><i class="fas fa-trophy"></i> 900+ problems solved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience">
+      <div class="container">
+        <h2 class="section-title">Experience & Leadership</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Junior Core Member</h3>
+              <h4>VIT Stellar</h4>
+              <span class="timeline-date">Jan 2024 – Jan 2025</span>
+              <p>
+                Organized Cosmic Walk 3.0, guiding 50+ participants in
+                stargazing and astrophotography events.
+              </p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <h3>Project Intern</h3>
+              <h4>Physics Wallah</h4>
+              <span class="timeline-date">Mar 2025 – Aug 2025</span>
+              <p>
+                Engineered end-to-end development of NutriBaba, an AI-powered
+                nutrition analysis platform using AWS infrastructure. Worked in
+                Agile sprints, improving deployment scalability and feature
+                delivery speed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <div>
+                <h3>Email</h3>
+                <p>satvik.shayappa2023@vitstudent.ac.in</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <div>
+                <h3>Phone</h3>
+                <p>+91 80802 73783</p>
+              </div>
+            </div>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/satvik-jambagi/"
+                class="social-link"
+                ><i class="fab fa-linkedin"></i
+              ></a>
+              <a href="https://github.com/7vik2005" class="social-link"
+                ><i class="fab fa-github"></i
+              ></a>
+            </div>
+          </div>
+          <div class="contact-form">
+            <form>
+              <div class="form-group">
+                <input type="text" placeholder="Your Name" required />
+              </div>
+              <div class="form-group">
+                <input type="email" placeholder="Your Email" required />
+              </div>
+              <div class="form-group">
+                <textarea
+                  placeholder="Your Message"
+                  rows="5"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Satvik Jambagi. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
