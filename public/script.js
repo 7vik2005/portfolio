@@ -476,11 +476,6 @@ if (!document.querySelector("#portfolio-animations")) {
                 opacity: 0;
             }
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes glitch {
             0% { transform: translate(0); }
             20% { transform: translate(-2px, 2px); }
@@ -489,20 +484,10 @@ if (!document.querySelector("#portfolio-animations")) {
             80% { transform: translate(2px, -2px); }
             100% { transform: translate(0); }
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes blink {
             0%, 50% { border-color: #00d4ff; }
             51%, 100% { border-color: transparent; }
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
@@ -513,11 +498,6 @@ if (!document.querySelector("#portfolio-animations")) {
                 opacity: 1;
             }
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes slideOut {
             from {
                 transform: translateX(0);
@@ -528,11 +508,6 @@ if (!document.querySelector("#portfolio-animations")) {
                 opacity: 0;
             }
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @media (max-width: 768px) {
             .notification {
                 top: 10px !important;
@@ -541,11 +516,6 @@ if (!document.querySelector("#portfolio-animations")) {
                 max-width: none !important;
             }
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         .notification-close {
             background: none;
             border: none;
