@@ -1,6 +1,5 @@
 // Utility functions for better performance and reliability
 const debounce = (func, wait) => {
-<<<<<<< HEAD
   let timeout;
   return function executedFunction(...args) {
     const later = () => {
@@ -23,30 +22,6 @@ const throttle = (func, limit) => {
       setTimeout(() => (inThrottle = false), limit);
     }
   };
-=======
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
-
-const throttle = (func, limit) => {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    }
->>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
 };
 
 // Check if device is mobile
@@ -94,7 +69,7 @@ hamburger?.addEventListener('click', (e) => {
     e.stopPropagation();
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
-    
+
     // Prevent body scroll when mobile menu is open
     if (navMenu.classList.contains('active')) {
         body.style.overflow = 'hidden';
@@ -109,8 +84,8 @@ hamburger?.addEventListener('click', (e) => {
 
 // Close mobile menu when clicking outside
 document.addEventListener('click', (e) => {
-    if (navMenu?.classList.contains('active') && 
-        !navMenu.contains(e.target) && 
+    if (navMenu?.classList.contains('active') &&
+        !navMenu.contains(e.target) &&
         !hamburger?.contains(e.target)) {
         closeMobileMenu();
     }
@@ -310,10 +285,10 @@ const heroTitle = document.querySelector('.hero-title');
 if (heroTitle) {
     const titleText = heroTitle.innerHTML;
     heroTitle.innerHTML = '';
-    
+
     let i = 0;
     const speed = isMobile() ? 30 : 50; // Faster on mobile
-    
+
     function typeWriter() {
         if (i < titleText.length) {
             heroTitle.innerHTML += titleText.charAt(i);
@@ -327,7 +302,7 @@ if (heroTitle) {
     // Add cursor effect
     heroTitle.style.borderRight = '3px solid #00d4ff';
     heroTitle.style.animation = 'blink 1s infinite';
-    
+
     window.addEventListener('load', () => {
         setTimeout(typeWriter, isMobile() ? 500 : 1000);
     });
@@ -462,7 +437,7 @@ contactForm?.addEventListener("submit", async function (e) {
             parallax.style.transform = `translateY(${speed}px)`;
         }
     }, 16);
-    
+
     window.addEventListener('scroll', handleParallax);
 }
 
@@ -502,10 +477,10 @@ const contactForm = document.querySelector('.contact-form form');
 
 contactForm?.addEventListener('submit', async function (e) {
     e.preventDefault();
-    
+
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    
+
     // Show loading state
     submitBtn.textContent = 'Sending...';
     submitBtn.disabled = true;
@@ -601,7 +576,7 @@ function showNotification(message, type = 'info') {
         <span class="notification-message">${message}</span>
         <button class="notification-close">&times;</button>
     `;
-    
+
     // Add styles
     notification.style.cssText = `
         position: fixed;
@@ -666,12 +641,12 @@ document.querySelectorAll(".btn").forEach((btn) => {
 document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('click', createRipple);
     btn.addEventListener('touchstart', createRipple);
-    
+
     function createRipple(e) {
         const ripple = document.createElement('span');
         const rect = btn.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
-        
+
         ripple.style.cssText = `
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
             position: absolute;
@@ -747,7 +722,7 @@ logo?.addEventListener("animationend", () => {
         btn.style.position = 'relative';
         btn.style.overflow = 'hidden';
         btn.appendChild(ripple);
-        
+
         setTimeout(() => ripple.remove(), 600);
     }
 });
@@ -760,7 +735,7 @@ document.querySelectorAll('.project-card').forEach(card => {
             this.style.boxShadow = '0 25px 50px rgba(0, 212, 255, 0.2)';
             this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         });
-        
+
         card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) rotateX(0deg)';
             this.style.boxShadow = 'none';
@@ -771,7 +746,7 @@ document.querySelectorAll('.project-card').forEach(card => {
             this.style.transform = 'scale(0.98)';
             this.style.transition = 'transform 0.1s ease';
         });
-        
+
         card.addEventListener('touchend', function() {
             this.style.transform = 'scale(1)';
             this.style.transition = 'transform 0.2s ease';
@@ -814,14 +789,14 @@ function createParticles() {
     particle.style.cssText = `
 =======
     if (isMobile()) return; // Skip particles on mobile for performance
-    
+
     const hero = document.querySelector('.hero');
     const particleCount = isTablet() ? 25 : 50;
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
-        
+
         const size = Math.random() * 4 + 1;
         particle.style.cssText = `
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
@@ -871,12 +846,12 @@ if (!document.querySelector("#portfolio-animations")) {
   style.textContent = `
 =======
     const currentlyMobile = isMobile();
-    
+
     // Close mobile menu if screen becomes desktop
     if (!currentlyMobile && navMenu?.classList.contains('active')) {
         closeMobileMenu();
     }
-    
+
     // Refresh particles based on screen size
     document.querySelectorAll('.particle').forEach(p => p.remove());
     createParticles();
@@ -899,7 +874,7 @@ if (!document.querySelector('#portfolio-animations')) {
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes glitch {
             0% { transform: translate(0); }
@@ -912,7 +887,7 @@ if (!document.querySelector('#portfolio-animations')) {
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes blink {
             0%, 50% { border-color: #00d4ff; }
@@ -921,7 +896,7 @@ if (!document.querySelector('#portfolio-animations')) {
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes slideIn {
             from {
@@ -936,7 +911,7 @@ if (!document.querySelector('#portfolio-animations')) {
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @keyframes slideOut {
             from {
@@ -951,7 +926,7 @@ if (!document.querySelector('#portfolio-animations')) {
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         @media (max-width: 768px) {
             .notification {
@@ -964,7 +939,7 @@ if (!document.querySelector('#portfolio-animations')) {
 <<<<<<< HEAD
 
 =======
-        
+
 >>>>>>> 211cfd49e49ad92d13c6d703360adad802ecd735
         .notification-close {
             background: none;
@@ -1028,11 +1003,11 @@ console.log("Made with ❤️ by Satvik Jambagi");
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     createParticles();
-    
+
     // Add loading animation
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease-in-out';
-    
+
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
